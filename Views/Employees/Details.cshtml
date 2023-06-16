@@ -1,0 +1,99 @@
+﻿@model TSAIdentity.Models.Employee
+@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+<h1></h1>
+
+<div>
+    <h4>Profile</h4>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EmployeeName)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EmployeeName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EmployeeContact)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EmployeeContact)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EmployeeEmail)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EmployeeEmail)
+        </dd>
+        @*<dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.EmployeePassword)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.EmployeePassword)
+        </dd>*@
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Designation)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Designation.DesignationName)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.IsBusy)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.IsBusy)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.IsActive)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.IsActive)
+        </dd>
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Organization)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Organization.OrganizationName)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.EmployeeSkills)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var employeeSkill in Model.EmployeeSkills)
+            {
+                <span>@employeeSkill.Skill.SkillName</span>
+                if (employeeSkill != Model.EmployeeSkills.Last())
+                {
+                    <span>,</span>
+                }
+            }
+        </dd>
+    </dl>
+</div>
+<div>
+    
+    
+    @if (@Model.IsActive)
+    {
+        <a asp-action="Edit" asp-route-id="@Model?.EmployeeId">Edit</a> @:|
+        if (!User.IsInRole("Employee"))
+        {
+            <a asp-action="ActivateDeactivate" asp-route-id="@Model?.EmployeeId">Deactivate</a>@: |
+        }
+        <a asp-action="ChangePassword" asp-route-id="@Model?.EmployeeId">ChangePassword</a> @: |
+    }
+    else
+    {
+        if (!User.IsInRole("Employee"))
+        {
+            <a asp-action="ActivateDeactivate" asp-route-id="@Model?.EmployeeId">Activate</a>@: |
+        }
+    }
+    @if (!User.IsInRole("Employee"))
+    {
+        <a asp-action="Promote" asp-route-id="@Model?.EmployeeId">Promote</a> @: |
+        <a asp-action="Index">Back to List</a> @:|
+    }
+</div>
